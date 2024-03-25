@@ -1,112 +1,122 @@
-"""class MyClass:
-    def __init__(self, first, second):
-        self.first = first
-        self.second = second
-
-    def make_action(self):
-        print(self.first, self.second)
-        print("What do Pink Floyd and Princess Diana have in common? Their greatest hit was the wall.")
-
-
-def main():
-    cockroach1 = MyClass('DanDan', 'Dan')
-    cockroach1.make_action()
-
-
-main()"""
-
 ####### HOME TASK N1 #######
+mat = [[5, 6, 5, 1],
+       [5, 9, 3, 1],
+       [1, 8, 0, 1],
+       [7, 0, 3, 3],
+       [3, 1, 2, 0]]
 
-
-"""lst = [[5, 2, 6, 1],
-       [4, 7, 3, 8],
-       [5, 9, 0, 4],
-       [3, 1, 0, -3],
-       [9, 0, 2, 2]]
+mat_t = list(zip(*mat))
 
 
 # 1 Дана целочисленная прямоугольная матрица. Определить
-def first(lst):
-    print("Вариант 1 \n Дана целочисленная прямоугольная матрица. Определить")
-    # 1) количество строк, не содержащих ни одного нулевого элемента
-    j = 0
-    for i in lst:
-        if 0 not in i:
-            j += 1
-    print("1) количество строк, не содержащих ни одного нулевого элемента: ", j)
+def first(mat):
+    def v_one_first():
+        print("Вариант 1 \n Дана целочисленная прямоугольная матрица. Определить")
+        elem = 0
+        for row in mat:
+            if 0 not in row:
+                elem += 1
+        return elem
 
-    # 2) максимальное из чисел, встречающихся в заданной матрице более одного раза
-    a = 0
-    for i in lst:
-        for j in i:
-            a += i.count(j)
-    if a > 1:
-        print("2) максимальное из чисел, встречающихся в заданной матрице более одного раза:",
-              max([j for i in lst for j in i]))
+    def v_one_second():
+        seen = []
+        repeated = []
+        for row in mat:
+            for elem in row:
+                if elem in seen and elem not in repeated:
+                    repeated.append(elem)
+                else:
+                    seen.append(elem)
+        if repeated:
+            return max(repeated)
+        else:
+            return None
+
+    result_v_one_first = v_one_first()
+    result_v_one_second = v_one_second()
+    return result_v_one_first, result_v_one_second
 
 
-first(lst)
+result_v_one_first, result_v_one_second = first(mat)
+print("1) количество строк, не содержащих ни одного нулевого элемента ", result_v_one_first)
+print("2) максимальное из чисел, встречающихся в заданной матрице более одного раза ", result_v_one_second)
 
 
 # 3 Дана целочисленная прямоугольная матрица. Определить
-def third(lst):
+def third(mat):
     print("Вариант 3 \n Дана целочисленная прямоугольная матрица. Определить")
+
     # 1) количество столбцов, содержащих хотя бы один нулевой элемент;
-    lst_t = list(zip(*lst))
-    j = 0
-    for i in lst_t:
-        if 0 in i:
-            j += 1
-    print("1) количество столбцов, содержащих хотя бы один нулевой элемент:", j)
+    def v_three_first():
+        elem = 0
+        for row in mat_t:
+            if 0 in row:
+                elem += 1
+        return elem
 
     # 2) номер строки, в которой находится самая длинная серия одинаковых элементов
-    max_count = 0
-    max_row = 0
-    row_num = 0
-    for row in lst:
-        count = 1
-        for i in range(1, len(row)):
-            if row[i] == row[i - 1]:
-                count += 1
-            else:
-                count = 1
-            if count > max_count:
-                max_count = count
-                max_row = row_num
-        row_num += 1
-    print("2) номер строки, в которой находится самая длинная серия одинаковых элементов: ", max_row)
+    def v_three_second():
+        max_count = 0
+        max_row = 0
+        row_num = 0
+        for row in mat:
+            count = 1
+            for elem in range(1, len(row)):
+                if row[elem] == row[elem - 1]:
+                    count += 1
+                else:
+                    count = 1
+                if count > max_count:
+                    max_count = count
+                    max_row = row_num
+            row_num += 1
+        return max_row
+
+    result_v_three_first = v_three_first()
+    result_v_three_second = v_three_second()
+    return result_v_three_first, result_v_three_second
 
 
-third(lst)
+result_v_three_first, result_v_three_second = third(mat)
+print("1) количество столбцов, содержащих хотя бы один нулевой элемент: ", result_v_three_first)
+print("2) номер строки, в которой находится самая длинная серия одинаковых элементов ", result_v_three_second)
 
 
 # 18 Дана целочисленная прямоугольная матрица. Определить
-def eighteenth(lst):
+def eighteenth(mat):
     print("Вариант 18 \n Дана целочисленная прямоугольная матрица. Определить")
+
     # 1) количество строк, содержащих хотя бы один нулевой элемент;
-    j = 0
-    for i in lst:
-        if 0 in i:
-            j += 1
-    print("1) количество строк, содержащих хотя бы один нулевой элемент:", j)
+    def v_eighteen_first():
+        elem = 0
+        for row in mat:
+            if 0 in row:
+                elem += 1
+        return elem
 
     # 2) номер столбца, в которой находится самая длинная серия одинаковых элементов
-    lst_t = list(zip(*lst))
-    max_count = 0
-    max_row = 0
-    row_num = 0
-    for row in lst_t:
-        count = 1
-        for i in range(1, len(row)):
-            if row[i] == row[i - 1]:
-                count += 1
-            else:
-                count = 1
-            if count > max_count:
-                max_count = count
-                max_row = row_num
-        row_num += 1
-    print("2) номер столбца, в которой находится самая длинная серия одинаковых элементов: ", max_row)
+    def v_eighteen_second():
+        max_count = 0
+        max_col = 0
+        col_num = 0
+        for col in mat_t:
+            count = 1
+            for elem in range(1, len(col)):
+                if col[elem] == col[elem - 1]:
+                    count += 1
+                else:
+                    count = 1
+                if count > max_count:
+                    max_count = count
+                    max_col = col_num
+            col_num += 1
+        return max_col
+
+    result_v_eighteen_first = v_eighteen_first()
+    result_v_eighteen_second = v_eighteen_second()
+    return result_v_eighteen_first, result_v_eighteen_second
 
 
-eighteenth(lst)"""
+result_v_eighteen_first, result_v_eighteen_second = eighteenth(mat)
+print("1) количество строк, содержащих хотя бы один нулевой элемент: ", result_v_eighteen_first)
+print("2) номер столбца, в которой находится самая длинная серия одинаковых элементов ", result_v_eighteen_second)
