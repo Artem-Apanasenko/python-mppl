@@ -1,122 +1,49 @@
-####### HOME TASK N1 #######
-mat = [[5, 6, 5, 1],
-       [5, 9, 3, 1],
-       [1, 8, 0, 1],
-       [7, 0, 3, 3],
-       [3, 1, 2, 0]]
+class MatrixAnalyzer:
+    def __init__(self, matrix):
+        self.matrix = matrix
+        self.transposed_matrix = [list(row) for row in zip(*self.matrix)]
 
-mat_t = list(zip(*mat))
+    def find_nonzero_rows(self):
+        return sum(1 for row in self.matrix if 0 not in row)
 
+    def find_max_num(self):
+        flatten_matrix = [elem for row in self.matrix for elem in row]
+        return max(elem for elem in set(flatten_matrix) if flatten_matrix.count(elem) > 1)
 
-# 1 Дана целочисленная прямоугольная матрица. Определить
-def first(mat):
-    def v_one_first():
-        print("Вариант 1 \n Дана целочисленная прямоугольная матрица. Определить")
-        elem = 0
-        for row in mat:
-            if 0 not in row:
-                elem += 1
-        return elem
+    def find_withzero_columns(self):
+        return sum(1 for row in self.transposed_matrix if 0 in row)
 
-    def v_one_second():
-        seen = []
-        repeated = []
-        for row in mat:
-            for elem in row:
-                if elem in seen and elem not in repeated:
-                    repeated.append(elem)
-                else:
-                    seen.append(elem)
-        if repeated:
-            return max(repeated)
-        else:
-            return None
+    def find_longest_series(self):
+        counts = [sum(1 for i in range(len(row) - 1) if row[i] == row[i + 1]) for row in self.matrix]
+        return counts.index(max(counts))
 
-    result_v_one_first = v_one_first()
-    result_v_one_second = v_one_second()
-    return result_v_one_first, result_v_one_second
+    def summarize_positive_rows(self):
+        return [sum(row) for row in self.transposed_matrix if all(elem >= 0 for elem in row)]
+
+    def even_positive_sorting(self):
+        even_sum = [sum(elem for elem in row if elem % 2 == 0) for row in self.matrix]
+        equlize_value = {tuple(self.matrix[i]): even_sum[i] for i in range(len(self.matrix))}
+        return sorted(equlize_value, key=equlize_value.get)
+
+    def analyze(self):
+        print(f"1) the number of rows containing no zero element: {self.find_nonzero_rows()}")
+        print(f"2) the maximum number of numbers occurring more than once: {self.find_max_num()}")
+        print(f"3) the number of columns containing at least one zero element: {self.find_withzero_columns()}")
+        print(f"4) the number of the row containing the longest series of identical elements: {self.find_longest_series()}")
+        print(f"5) the sum of elements in columns without negative elements: {self.summarize_positive_rows()}")
+        print(f"6) Rows arranged by the sum of their positive even elements: {self.even_positive_sorting()}")
 
 
-result_v_one_first, result_v_one_second = first(mat)
-print("1) количество строк, не содержащих ни одного нулевого элемента ", result_v_one_first)
-print("2) максимальное из чисел, встречающихся в заданной матрице более одного раза ", result_v_one_second)
+def main():
+    mat = [
+        [1, 6, 5, 0],
+        [4, 7, 2, 4],
+        [1, 1, 5, 1],
+        [4, 0, 8, 0],
+        [3, 1, 0, -5]
+    ]
+    analyzer = MatrixAnalyzer(mat)
+    analyzer.analyze()
 
 
-# 3 Дана целочисленная прямоугольная матрица. Определить
-def third(mat):
-    print("Вариант 3 \n Дана целочисленная прямоугольная матрица. Определить")
-
-    # 1) количество столбцов, содержащих хотя бы один нулевой элемент;
-    def v_three_first():
-        elem = 0
-        for row in mat_t:
-            if 0 in row:
-                elem += 1
-        return elem
-
-    # 2) номер строки, в которой находится самая длинная серия одинаковых элементов
-    def v_three_second():
-        max_count = 0
-        max_row = 0
-        row_num = 0
-        for row in mat:
-            count = 1
-            for elem in range(1, len(row)):
-                if row[elem] == row[elem - 1]:
-                    count += 1
-                else:
-                    count = 1
-                if count > max_count:
-                    max_count = count
-                    max_row = row_num
-            row_num += 1
-        return max_row
-
-    result_v_three_first = v_three_first()
-    result_v_three_second = v_three_second()
-    return result_v_three_first, result_v_three_second
-
-
-result_v_three_first, result_v_three_second = third(mat)
-print("1) количество столбцов, содержащих хотя бы один нулевой элемент: ", result_v_three_first)
-print("2) номер строки, в которой находится самая длинная серия одинаковых элементов ", result_v_three_second)
-
-
-# 18 Дана целочисленная прямоугольная матрица. Определить
-def eighteenth(mat):
-    print("Вариант 18 \n Дана целочисленная прямоугольная матрица. Определить")
-
-    # 1) количество строк, содержащих хотя бы один нулевой элемент;
-    def v_eighteen_first():
-        elem = 0
-        for row in mat:
-            if 0 in row:
-                elem += 1
-        return elem
-
-    # 2) номер столбца, в которой находится самая длинная серия одинаковых элементов
-    def v_eighteen_second():
-        max_count = 0
-        max_col = 0
-        col_num = 0
-        for col in mat_t:
-            count = 1
-            for elem in range(1, len(col)):
-                if col[elem] == col[elem - 1]:
-                    count += 1
-                else:
-                    count = 1
-                if count > max_count:
-                    max_count = count
-                    max_col = col_num
-            col_num += 1
-        return max_col
-
-    result_v_eighteen_first = v_eighteen_first()
-    result_v_eighteen_second = v_eighteen_second()
-    return result_v_eighteen_first, result_v_eighteen_second
-
-
-result_v_eighteen_first, result_v_eighteen_second = eighteenth(mat)
-print("1) количество строк, содержащих хотя бы один нулевой элемент: ", result_v_eighteen_first)
-print("2) номер столбца, в которой находится самая длинная серия одинаковых элементов ", result_v_eighteen_second)
+main()
